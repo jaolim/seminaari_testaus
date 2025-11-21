@@ -9,9 +9,9 @@ jobs:
       T_URL: ${{ secrets.T_URL }}
       T_USERNAME1: ${{ secrets.T_USERNAME1 }}
       T_PASSWORD1: ${{ secrets.T_PASSWORD1 }}
-      T_URL: ${{ secrets.B_URL }}
-      T_USERNAME1: ${{ secrets.B_USERNAME1 }}
-      T_PASSWORD1: ${{ secrets.B_PASSWORD1 }}
+      B_URL: ${{ secrets.B_URL }}
+      B_USERNAME1: ${{ secrets.B_USERNAME1 }}
+      B_PASSWORD1: ${{ secrets.B_PASSWORD1 }}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4

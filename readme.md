@@ -73,8 +73,58 @@ Githubiin on ohjelmoitu workflow testien ajamiseksi manuaalisesti. Tämän käyt
 
 Settings -> Secrets and variables -> Actions -> New repository secret.
 
-## 
+## Uutta opittua
 
+### Github workflow
+
+Halusin testit ajettaviksi Githubissa, mutta ainoastaan manuaalisesti, joten joiduin muokkaamaan ajoehtoja NPM:n automaattisesti generoimassa playwright.yml tiedostossa.
+
+Lisäksi tarvitsin ympäristömuuttujat Githubiin, joten ne piti myös määritellä workflow tiedostoon.
+
+Päivitetty playwright.yml:
+
+```
+name: Playwright Tests
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      T_URL: ${{ secrets.T_URL }}
+      T_USERNAME1: ${{ secrets.T_USERNAME1 }}
+      T_PASSWORD1: ${{ secrets.T_PASSWORD1 }}
+      B_URL: ${{ secrets.B_URL }}
+      B_USERNAME1: ${{ secrets.B_USERNAME1 }}
+      B_PASSWORD1: ${{ secrets.B_PASSWORD1 }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
+
+```
+
+### Github ja ympäristömuuttujat
+
+En ollut aikasemmin tarvinnut ympäristömuuttujia Github repositorioon, joten salaisuuksien lisääminen repositorioon oli selvitettävä, jotta Github Actions voi ajaa testit onnistuneesti.
+
+### Playwright taitojen kehitys
+
+En ollut ennen kurssia käyttänyt playwrightia, joten viikkotehtävää monimutkaisempien testion toteutus antoi lisää ymmärrystä ja käytännön kokemusta playwright testien kirjiottamisesta ja suunnittelemista.
 
 ## Lähteet
 

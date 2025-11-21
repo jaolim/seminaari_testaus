@@ -36,7 +36,7 @@ test('Admin login and navigation', async ({ page }) => {
     await password.fill(`${String(process.env.B_PASSWORD1)}`);
     await button.click();
 
-    //Successfull login
+    //Successful login
     await expect(page).toHaveURL(url);
     await expect(page.getByText("User:")).toBeVisible();
 
@@ -52,5 +52,31 @@ test('Admin login and navigation', async ({ page }) => {
     expect(selectRegionExists).toBeGreaterThan(0);
     const deleteRegionExists = await page.getByText("Delete").count();
     expect(selectRegionExists).toBeGreaterThan(0);
-    
+
+    //Add Region page
+    await page.getByRole('link', { name: 'Add New Region' }).click();
+    await expect(page).toHaveURL(`${url}/region/add`);
+
+    //Home Page
+    await page.getByRole('link', { name: 'Home' }).click();
+    await expect(page).toHaveURL(url);
+
+    //Edit Region page
+    await page
+        .locator('tr', { has: page.getByText('Kainuu') })
+        .getByRole('link', { name: 'Edit' })
+        .click();
+    await expect(page.getByText("Image Source Url")).toBeVisible();
+
+    //Home Page
+    await page.getByRole('link', { name: 'Home' }).click();
+    await expect(page).toHaveURL(url);
+
+    //Select Uusimaa
+    await page
+        .locator('tr', { has: page.getByText('Uusimaa') })
+        .getByRole('link', { name: 'Select' })
+        .click();
+   await expect(page.getByRole('cell', { name: 'Helsinki', exact: true})).toBeVisible();
+
 });

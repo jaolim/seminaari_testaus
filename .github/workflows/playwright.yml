@@ -5,6 +5,13 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      T_URL: ${{ secrets.T_URL }}
+      T_USERNAME1: ${{ secrets.T_USERNAME1 }}
+      T_PASSWORD1: ${{ secrets.T_PASSWORD1 }}
+      T_URL: ${{ secrets.B_URL }}
+      T_USERNAME1: ${{ secrets.B_USERNAME1 }}
+      T_PASSWORD1: ${{ secrets.B_PASSWORD1 }}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4

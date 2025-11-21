@@ -48,6 +48,8 @@ Testauksen aion tehdä ajoaikaista tietokantaa käyttävään versioon, mutta se
 					
 ## Ohjelmistoprojekti I - TicketGuru
 
+Tätä projektia varten toteutan perus tarkistukset endpointeille, jotta on helppo jatkokehittää tarkempia testejä, kun sivujen sisältö on lyöty lukkoon.
+
 - Repositorio: https://github.com/jaolim/TicketGuru
 - Julkaisu: https://ticketguru-ticketguru-postgres.2.rahtiapp.fi/
 
@@ -124,7 +126,7 @@ En ollut aikasemmin tarvinnut ympäristömuuttujia Github repositorioon, joten s
 
 ### Playwright taitojen kehitys
 
-En ollut ennen kurssia käyttänyt playwrightia, joten viikkotehtävää monimutkaisempien testion toteutus antoi lisää ymmärrystä ja käytännön kokemusta playwright testien kirjiottamisesta ja suunnittelemista.
+En ollut ennen kurssia käyttänyt playwrightia, joten viikkotehtävää monimutkaisempien testien toteutus antoi lisää ymmärrystä ja käytännön kokemusta playwright testien kirjiottamisesta ja suunnittelemista.
 
 ## Lähteet
 

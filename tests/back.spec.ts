@@ -77,6 +77,64 @@ test('Admin login and navigation', async ({ page }) => {
         .locator('tr', { has: page.getByText('Uusimaa') })
         .getByRole('link', { name: 'Select' })
         .click();
-   await expect(page.getByRole('cell', { name: 'Helsinki', exact: true})).toBeVisible();
+    await expect(page.getByRole('cell', { name: 'Helsinki', exact: true })).toBeVisible();
+    const uusimaaUrl = page.url();
 
+    //Add City page
+    await page.getByRole('link', { name: 'Add City' }).click();
+    await expect(page).toHaveURL(`${url}/city/add`);
+
+    //Edit City
+    await page.goto(uusimaaUrl);
+    await page
+        .locator('tr', { has: page.getByText('Helsinki') })
+        .getByRole('link', { name: 'Edit' })
+        .click();
+    await expect(page.getByText("Image Source Url")).toBeVisible();
+
+    //Select Helsinki
+    await page.goto(uusimaaUrl);
+    await page
+        .locator('tr', { has: page.getByText('Helsinki') })
+        .getByRole('link', { name: 'Select' })
+        .click();
+    const helsinkiUrl = page.url();
+
+    //Add Location page
+    await page.getByRole('link', { name: 'Add New Location' }).click();
+    await expect(page.getByText("Image Source Url")).toBeVisible();
+
+    //Edit Central Railway Station
+    await page.goto(helsinkiUrl);
+    await page
+        .locator('tr', { has: page.getByText('Central Railway Station') })
+        .getByRole('link', { name: 'Edit' })
+        .click();
+    await expect(page.getByText("Image Source Url")).toBeVisible();
+
+    //Select Central Railway Station
+    await page.goto(helsinkiUrl);
+    await page
+        .locator('tr', { has: page.getByText('Central Railway Station') })
+        .getByRole('link', { name: 'Select' })
+        .click();
+    const railwaysUrl = page.url();
+
+    //Add comment page
+    await page.getByRole('link', { name: 'Add New Comment' }).click();
+    await expect(page.getByText("Add Comment for")).toBeVisible();
+
+    //Edit comment page
+    await page.goto(railwaysUrl);
+    await page
+        .locator('tr', { has: page.getByText('Statues') })
+        .getByRole('link', { name: 'Edit' })
+        .click();
+    await expect(page.getByText("Edit commment for")).toBeVisible(); //Typo spotted, fix original!
+
+    //Edit shouldn't exist(only visible to owner)
+    await page.goto(railwaysUrl);
+    await expect(page
+        .locator('tr', { has: page.getByText('Beautiful Views') })
+        .getByRole('link', { name: 'Edit' })).toHaveCount(0);
 });

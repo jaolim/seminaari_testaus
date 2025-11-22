@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
+// Page is responsive
 test('Regions responds', async ({ page }) => {
     const url = String(process.env.B_URL);
 
@@ -11,6 +12,7 @@ test('Regions responds', async ({ page }) => {
     await expect(page.getByText("Regions of Finland")).toBeVisible();
 })
 
+// Logging in as admin, confirming elements are present and navigation links work
 test('Admin login and navigation', async ({ page }) => {
     const url = `${String(process.env.B_URL)}`;
 

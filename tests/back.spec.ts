@@ -141,7 +141,7 @@ test('Admin login and navigation', async ({ page }) => {
         .getByRole('link', { name: 'Edit' })).toHaveCount(0);
 });
 
-// Logging in as user, confirming elements are present and navigation links work
+// Logging in as user, confirming correct elements are shown or hidden and testing navigation links
 test('User login and navigation', async ({ page }) => {
     const url = `${String(process.env.B_URL)}`;
 

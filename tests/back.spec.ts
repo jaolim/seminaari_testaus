@@ -527,9 +527,9 @@ test('Comments CRUD', async ({ page }) => {
     const editHeadline = page.locator('input[name="headline"]');
     const editBody = page.locator('input[name="body"]');
 
-    await addHeadline.fill("EditedHeadline")
-    await addBody.fill("Edited comment test; delete if present");
-    await addButton.click();
+    await editHeadline.fill("EditedHeadline")
+    await editBody.fill("Edited comment test; delete if present");
+    await editButton.click();
     await expect(page.getByText('EditedHeadline')).toBeVisible();
 
     //Delete added comment
@@ -538,5 +538,5 @@ test('Comments CRUD', async ({ page }) => {
         .getByRole('link', { name: 'Delete' })
         .click();
     await expect(page.getByText("EditedHeadline")).toHaveCount(0);
-    
+
 });

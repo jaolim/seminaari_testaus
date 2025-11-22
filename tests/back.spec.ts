@@ -187,7 +187,6 @@ test('User login and navigation', async ({ page }) => {
     //Add Region not present
     await expect(page.getByRole('link', { name: 'Add New Region' })).toHaveCount(0);
 
-
     //Edit Region not prsent
     await expect(page
         .locator('tr', { has: page.getByText('Kainuu') })
@@ -397,4 +396,78 @@ test('Cities CRUD', async ({ page }) => {
         .getByRole('link', { name: 'Delete' })
         .click();
     await expect(page.getByText("CityEdit")).toHaveCount(0);
+});
+
+//Add, edit and delete location
+test('Locations CRUD', async ({ page }) => {
+    const url = `${String(process.env.B_URL)}`;
+
+    //logging in
+    await page.goto(`${url}/login`);
+    await page.getByLabel("User Name :").fill(String(process.env.B_USERNAME1))
+    await page.getByLabel("Password:").fill(`${String(process.env.B_PASSWORD1)}`);
+    await page.getByRole('button', { name: 'Sign In' }).click()
+
+    //Add location page
+    await page
+        .locator('tr', { has: page.getByText('Uusimaa') })
+        .getByRole('link', { name: 'Select' })
+        .click();
+    await page
+        .locator('tr', { has: page.getByText('Helsinki') })
+        .getByRole('link', { name: 'Select' })
+        .click();
+    await page.getByRole('link', { name: 'Add New Location' }).click();
+    await expect(page).toHaveURL(`${url}/location/add`);
+
+    //Add location elements
+    const addButton = page.getByRole('button', { name: "Save" });
+    const addName = page.locator('input[name="name"]');
+    const addDescription = page.locator('input[name="description"]');
+    const addAddress = page.locator('input[name="address"]');
+    const addImage = page.locator('input[name="image"]');
+
+    //Missing name error
+    await addButton.click();
+    await expect(page.getByText("Location name is required.")).toBeVisible();
+
+    //Duplicate name error
+    await addName.fill("Central Railway Station");
+    await addButton.click();
+    await expect(page.getByText("Location by the name of Central Railway Station already exists.")).toBeVisible();
+
+    //Add location
+    await page.locator('#cities').selectOption({ label: 'Helsinki' });
+    await addName.fill("Playwright");
+    addDescription.fill("Test location; delete if present")
+    addAddress.fill("A dress for addressing the added address")
+    addImage.fill("Add image test");
+    await addButton.click();
+    await expect(page.getByText("Playwright")).toBeVisible();
+
+    //Edit location
+    await page
+        .locator('tr', { has: page.getByText('Playwright') })
+        .getByRole('link', { name: 'Edit' })
+        .click();
+    const editButton = page.getByRole('button', { name: "Save" });
+    const editName = page.locator('input[name="name"]');
+    const editDescription = page.locator('input[name="description"]');
+    const editAddress = page.locator('input[name="address"]');
+    const editImage = page.locator('input[name="image"]');
+
+    await addName.fill("EditedLocation");
+    addDescription.fill("Edited location; delete if present")
+    addAddress.fill("Edited address")
+    addImage.fill("edited image test");
+    await addButton.click();
+    await expect(page.getByText("EditedLocation")).toBeVisible();
+
+    //Delete added location
+    await page
+        .locator('tr', { has: page.getByText('EditedLocation') })
+        .getByRole('link', { name: 'Delete' })
+        .click();
+    await expect(page.getByText("EditedLocation")).toHaveCount(0);
+
 });

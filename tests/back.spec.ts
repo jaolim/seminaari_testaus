@@ -469,5 +469,74 @@ test('Locations CRUD', async ({ page }) => {
         .getByRole('link', { name: 'Delete' })
         .click();
     await expect(page.getByText("EditedLocation")).toHaveCount(0);
+});
 
+//Add, edit and delete comments
+test('Comments CRUD', async ({ page }) => {
+    const url = `${String(process.env.B_URL)}`;
+
+    //logging in
+    await page.goto(`${url}/login`);
+    await page.getByLabel("User Name :").fill(String(process.env.B_USERNAME1))
+    await page.getByLabel("Password:").fill(`${String(process.env.B_PASSWORD1)}`);
+    await page.getByRole('button', { name: 'Sign In' }).click()
+
+    //Add comment page
+    await page
+        .locator('tr', { has: page.getByText('Uusimaa') })
+        .getByRole('link', { name: 'Select' })
+        .click();
+    await page
+        .locator('tr', { has: page.getByText('Helsinki') })
+        .getByRole('link', { name: 'Select' })
+        .click();
+    await page
+        .locator('tr', { has: page.getByText('Central Railway Station') })
+        .getByRole('link', { name: 'Select' })
+        .click();
+    const railwayUrl = page.url();
+    await page.getByRole('link', { name: 'Add New Comment' }).click();
+    await expect(page).toHaveURL(`${railwayUrl}/comment/add`);
+
+    //Add comment elements
+    const addButton = page.getByRole('button', { name: "Save" });
+    const addHeadline = page.locator('input[name="headline"]');
+    const addBody = page.locator('input[name="body"]');
+
+    //Headline required
+    await addButton.click();
+    await expect(page.getByText('Comment headline is required.')).toBeVisible();
+
+    //Body required
+    await addHeadline.fill("Headline")
+    await addButton.click();
+    await expect(page.getByText('Comment body is required.')).toBeVisible();
+
+    //Add comment
+    await addHeadline.fill("Playwright")
+    await addBody.fill("Test comment; delete if present");
+    await addButton.click();
+    await expect(page.getByText('Playwright')).toBeVisible();
+
+    //Edit location
+    await page
+        .locator('tr', { has: page.getByText('Playwright') })
+        .getByRole('link', { name: 'Edit' })
+        .click();
+    const editButton = page.getByRole('button', { name: "Save" });
+    const editHeadline = page.locator('input[name="headline"]');
+    const editBody = page.locator('input[name="body"]');
+
+    await addHeadline.fill("EditedHeadline")
+    await addBody.fill("Edited comment test; delete if present");
+    await addButton.click();
+    await expect(page.getByText('EditedHeadline')).toBeVisible();
+
+    //Delete added comment
+    await page
+        .locator('tr', { has: page.getByText('EditedHeadline') })
+        .getByRole('link', { name: 'Delete' })
+        .click();
+    await expect(page.getByText("EditedHeadline")).toHaveCount(0);
+    
 });

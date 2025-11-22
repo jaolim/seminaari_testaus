@@ -51,9 +51,9 @@ test('Admin login and navigation', async ({ page }) => {
     const selectRegionExists = await page.getByText("Select").count();
     expect(selectRegionExists).toBeGreaterThan(0);
     const editRegionExists = await page.getByText("Edit").count();
-    expect(selectRegionExists).toBeGreaterThan(0);
+    expect(editRegionExists).toBeGreaterThan(0);
     const deleteRegionExists = await page.getByText("Delete").count();
-    expect(selectRegionExists).toBeGreaterThan(0);
+    expect(deleteRegionExists).toBeGreaterThan(0);
 
     //Add Region page
     await page.getByRole('link', { name: 'Add New Region' }).click();
@@ -138,5 +138,121 @@ test('Admin login and navigation', async ({ page }) => {
     await page.goto(railwaysUrl);
     await expect(page
         .locator('tr', { has: page.getByText('Beautiful Views') })
+        .getByRole('link', { name: 'Edit' })).toHaveCount(0);
+});
+
+// Logging in as user, confirming elements are present and navigation links work
+test('User login and navigation', async ({ page }) => {
+    const url = `${String(process.env.B_URL)}`;
+
+    //home page
+    await page.goto(url);
+    await expect(page.getByText("Regions of Finland")).toBeVisible();
+
+    //login page
+    await page.getByRole('link', { name: 'Login' }).click();
+    await expect(page).toHaveURL(`${url}/login`);
+
+    //input elements
+    const name = page.getByLabel("User Name :");
+    const password = page.getByLabel("Password:");
+    const button = page.getByRole('button', { name: 'Sign In' });
+
+    //Correct error message
+    await button.click();
+    await expect(page.getByText("Invalid username or password.")).toBeVisible();
+
+    //Filling user details
+    await name.fill(String(process.env.B_USERNAME2));
+    await password.fill(`${String(process.env.B_PASSWORD2)}`);
+    await button.click();
+
+    //Successful login
+    await expect(page).toHaveURL(url);
+    await expect(page.getByText("User:")).toBeVisible();
+
+    //Admin elements
+    await expect(page.getByText("Clear Database")).toHaveCount(0);
+    await expect(page.getByText("Repopulate Database")).toHaveCount(0);
+    await expect(page.getByText("Add New Region")).toHaveCount(0);
+
+    //Admin elements at least 1
+    const selectRegionExists = await page.getByText("Select").count();
+    expect(selectRegionExists).toBeGreaterThan(0);
+    const editRegionExists = await page.getByText("Edit").count();
+    expect(editRegionExists).toBeLessThanOrEqual(0);
+    const deleteRegionExists = await page.getByText("Delete").count();
+    expect(deleteRegionExists).toBeLessThanOrEqual(0);
+
+    //Add Region not present
+    await expect(page.getByRole('link', { name: 'Add New Region' })).toHaveCount(0);
+
+
+    //Edit Region not prsent
+    await expect(page
+        .locator('tr', { has: page.getByText('Kainuu') })
+        .getByRole('link', { name: 'Edit' }))
+        .toHaveCount(0)
+
+    //Select Uusimaa
+    await page
+        .locator('tr', { has: page.getByText('Uusimaa') })
+        .getByRole('link', { name: 'Select' })
+        .click();
+    await expect(page.getByRole('cell', { name: 'Helsinki', exact: true })).toBeVisible();
+    const uusimaaUrl = page.url();
+
+    //Add City not present
+    await expect(page.getByRole('link', { name: 'Add City' })).toHaveCount(0);
+
+    //Edit City not present
+    await page.goto(uusimaaUrl);
+    await expect(page
+        .locator('tr', { has: page.getByText('Helsinki') })
+        .getByRole('link', { name: 'Edit' }))
+        .toHaveCount(0);
+
+    //Select Helsinki
+    await page.goto(uusimaaUrl);
+    await page
+        .locator('tr', { has: page.getByText('Helsinki') })
+        .getByRole('link', { name: 'Select' })
+        .click();
+    const helsinkiUrl = page.url();
+
+    //Add Location not present
+    await expect(page.getByRole('link', { name: 'Add New Location' })).toHaveCount(0);
+
+    //Edit Central Railway Station mpt present
+    await page.goto(helsinkiUrl);
+    await expect(page
+        .locator('tr', { has: page.getByText('Suomenlinna Fortress') })
+        .getByRole('link', { name: 'Edit' }))
+        .toHaveCount(0);
+
+    //Select Suomenlinna Fortress
+    await page.goto(helsinkiUrl);
+    await page
+        .locator('tr', { has: page.getByText('Suomenlinna Fortress') })
+        .getByRole('link', { name: 'Select' })
+        .click();
+    const locationUrl = page.url();
+
+    //Add comment page
+    await page.getByRole('link', { name: 'Add New Comment' }).click();
+    await expect(page.getByText("Add Comment for")).toBeVisible();
+
+    //Edit comment page
+    await page.goto(locationUrl);
+    await page
+        .locator('tr', { has: page.getByText('Great Spot for Sunrise') })
+        .getByRole('link', { name: 'Edit' })
+        .click();
+    await expect(page.getByText("Edit commment for")).toBeVisible(); //Typo spotted, fix original!
+
+    //Edit shouldn't exist(only visible to owner)
+    await page.goto(locationUrl);
+    await expect(page
+        .locator('tr', { has: page.getByText('Majestic Building') })
         .getByRole('link', { name: 'Edit' })).toHaveCount(0);
 });

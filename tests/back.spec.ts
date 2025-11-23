@@ -193,8 +193,6 @@ test('User login and navigation', async ({ page }) => {
     const deleteRegionExists = await deleteLinks.count();
     expect(deleteRegionExists).toBeLessThanOrEqual(0);
 
-    //getByRole('link', { name: 'Edit' }))
-
     //Add Region not present
     await expect(page.getByRole('link', { name: 'Add New Region' })).toHaveCount(0);
 

@@ -500,7 +500,7 @@ test('Comments CRUD', async ({ page }) => {
     await page.getByLabel("Password:").fill(`${String(process.env.B_PASSWORD1)}`);
     await page.getByRole('button', { name: 'Sign In' }).click()
 
-    //Add comment page
+    //Central Railway Station page
     await page
         .locator('tr', { has: page.getByText('Uusimaa') })
         .getByRole('link', { name: 'Select' })
@@ -514,12 +514,15 @@ test('Comments CRUD', async ({ page }) => {
         .getByRole('link', { name: 'Select' })
         .click();
     const railwayUrl = page.url();
-    await page.getByRole('link', { name: 'Add New Comment' }).click();
-    await expect(page).toHaveURL(`${railwayUrl}/comment/add`);
 
     //Clearing old values if present
     await trClickIfExists(page, 'Playwright', 'Delete');
     await trClickIfExists(page, 'EditedHeadline', 'Delete');
+
+    //Add comment page
+    await page.getByRole('link', { name: 'Add New Comment' }).click();
+    await expect(page).toHaveURL(`${railwayUrl}/comment/add`);
+
 
     //Add comment elements
     const addButton = page.getByRole('button', { name: "Save" });

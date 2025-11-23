@@ -48,12 +48,15 @@ test('Admin login and navigation', async ({ page }) => {
     await expect(page.getByText("Repopulate Database")).toBeVisible();
     await expect(page.getByText("Add New Region")).toBeVisible();
 
-    //Admin elements at least 1
-    const selectRegionExists = await page.getByText("Select").count();
+    //elements at least 1
+    const selectLinks = page.getByRole('link', { name: 'Select' });
+    const selectRegionExists = await selectLinks.count()
     expect(selectRegionExists).toBeGreaterThan(0);
-    const editRegionExists = await page.getByText("Edit").count();
+    const editLinks = page.getByRole('link', { name: 'Edit' });
+    const editRegionExists = await editLinks.count();
     expect(editRegionExists).toBeGreaterThan(0);
-    const deleteRegionExists = await page.getByText("Delete").count();
+    const deleteLinks = page.getByRole('link', { name: 'Delete' });
+    const deleteRegionExists = await deleteLinks.count();
     expect(deleteRegionExists).toBeGreaterThan(0);
 
     //Add Region page
@@ -177,13 +180,20 @@ test('User login and navigation', async ({ page }) => {
     await expect(page.getByText("Repopulate Database")).toHaveCount(0);
     await expect(page.getByText("Add New Region")).toHaveCount(0);
 
-    //Admin elements at least 1
-    const selectRegionExists = await page.getByText("Select").count();
+    //elements at least 1
+    const selectLinks = page.getByRole('link', { name: 'Select' });
+    const selectRegionExists = await selectLinks.count()
     expect(selectRegionExists).toBeGreaterThan(0);
-    const editRegionExists = await page.getByText("Edit").count();
+
+    //forbidden elements not present
+    const editLinks = page.getByRole('link', { name: 'Edit' });
+    const editRegionExists = await editLinks.count();
     expect(editRegionExists).toBeLessThanOrEqual(0);
-    const deleteRegionExists = await page.getByText("Delete").count();
+    const deleteLinks = page.getByRole('link', { name: 'Delete' });
+    const deleteRegionExists = await deleteLinks.count();
     expect(deleteRegionExists).toBeLessThanOrEqual(0);
+
+    //getByRole('link', { name: 'Edit' }))
 
     //Add Region not present
     await expect(page.getByRole('link', { name: 'Add New Region' })).toHaveCount(0);
@@ -223,7 +233,7 @@ test('User login and navigation', async ({ page }) => {
     //Add Location not present
     await expect(page.getByRole('link', { name: 'Add New Location' })).toHaveCount(0);
 
-    //Edit Central Railway Station mpt present
+    //Edit Suomenlinna Fortress not present
     await page.goto(helsinkiUrl);
     await expect(page
         .locator('tr', { has: page.getByText('Suomenlinna Fortress') })

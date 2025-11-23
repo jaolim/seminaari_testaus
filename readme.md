@@ -33,7 +33,9 @@ Elementit näkyvät ainoastaan käyttäjille, joilla on niille käyttöoikeus ja
 
 ### Testaus
 
+Testit kattavat sivuston navigoinnin, sekä oikeiden elementtien näkymisen admin ja user käyttäjille ja CRUD toiminnallisuuksien testaamisen admin käyttäjälle.
 
+Testeissä luotan testattavan sovelluksen generoiman testidatan löytyvän oikeassa muodossa, mutta testien lisäämän ja poistaman datan lähtötilan validoin etsimällä ja tuhoamalla datan, jos se on olemassa testien lähtötilanteissa.
 
 #### Testattavat osoitteet ja elementit
 
@@ -70,7 +72,7 @@ Elementit näkyvät ainoastaan käyttäjille, joilla on niille käyttöoikeus ja
 
 - **Regions responds**: Sivu latautuu
 - **Admin login and navigation**: Admin käyttäjällä pääsee kirjautumaan, sivun navigointi toimii ja oikeat elementit löytyvät kaikist endpointeista
-- **Login works user**: Admin käyttäjällä pääsee kirjautumaan, sivun navigointi toimii, oikeat elementit löytyvät kaikist endpointeista ja kiellettyjä elementtejä ei löydy
+- **Login works user**: User käyttäjällä pääsee kirjautumaan, sivun navigointi toimii, oikeat elementit löytyvät kaikist endpointeista ja kiellettyjä elementtejä ei löydy
 - **Regions CRUD**: Regions listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
 - **Cities CRUD**: Cities listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
 - **Locations CRUD**: Locations listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia

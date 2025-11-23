@@ -16,7 +16,7 @@ Testauksen aion tehdä ajoaikaista tietokantaa käyttävään versioon, mutta se
 
 Testaus on toteuttettu NPM TypeScript Playwright projektina, joka on ajettavissa sekä lokaalista, että manuaalisesti käynnistettävänä GitHub workflowna. Pidin manuaalista käynnistystä mielekkeempänä toteutuksena, kuin pushiin liitettyä ajoa.
 
-Testit on jaettu testattavien sivujen mukaan kahteen tiedostoon, jossa loogiset kokonaisuudet ovat oma testinsä. Lisäksi projekti sisältää `utils.ts` tiedston apufunktioille, joita molemmat testit voivat käyttää.
+Testit on jaettu testattavien sivujen mukaan kahteen tiedostoon, jossa loogiset kokonaisuudet ovat omat testinsä. Lisäksi projekti sisältää `utils.ts` tiedston apufunktioille, joita molemmat testit voivat käyttää.
 
 ## Back-end projekti - Regions of Finland
 
@@ -89,7 +89,7 @@ TicketGuru on lipunmyyntipalvelu, jossa voi myydä tapahtumiin lippuja.
 
 Tämä projekti on vielä kesken ja sivut tulevat muuttumaan huomattavasti, joten testit kattavat ainoastaan sisäänkirjautumisen ja eri endpointtien toimivuuden.
 
-Tältä pohjalta pysytyy jatkokehittämään kattavammat testit, kunhan sivujen sisältö on lyöty lukkoon.
+Tältä pohjalta pystyy jatkokehittämään kattavammat testit, kunhan sivujen sisältö on lyöty lukkoon.
 
 #### Testattavat osoitteet ja elementit
 
@@ -146,6 +146,10 @@ B_PASSWORD2=
 Githubiin on ohjelmoitu workflow testien ajamiseksi manuaalisesti. Tämän käyttämiseksi ympäristömuuttujat tarvitaan myös Githubissa, jossa ne on määritelty secreteiksi kohdassa:
 
 Settings -> Secrets and variables -> Actions -> New repository secret.
+
+## Demovideo
+
+Linkki annettu Teams tehtäväpalautuksessa.
 
 ## Uutta opittua
 

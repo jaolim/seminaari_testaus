@@ -2,6 +2,8 @@
 
 *Playwright testaus kurssien [back-end ohjelmointi](https://github.com/jaolim/back_end_harjoitustyo) ja [ohjelmistoprojekti 1](https://github.com/jaolim/TicketGuru) sivuille.*
 
+## Tavoitteet(lähtötilanne)
+
 Seminaarin tavoitteena on toteuttaa front-endin testaus kahteen yllämainittuun projektiin. Back-end projekti on valmis, joten siinä riittää toimintojen kattava testaus.
 
 Ohjelmistoprojekti I sen sijaan on vielä kesken, joten testit on suunniteltava helposti päivitettäviksi front-endin muuttuessa, sekä tehtävä päätös siitä, mitä kaikkea niiden on mielekästä kattaa.
@@ -10,14 +12,32 @@ Molemmista projekteista on kaksi julkaisua rahtiin, joista toinen käyttää ajo
 
 Testauksen aion tehdä ajoaikaista tietokantaa käyttävään versioon, mutta senkään sisällöstä ei testejä ajettaessa ole varmuutta, joka on otettava suunnittelussa huomioon, erityisesti update tai delete toiminnallisuuksia testatessa.
 
+## Testauksen toteutus
+
+Testaus on toteuttettu NPM TypeScript Playwright projektina, joka on ajettavissa sekä lokaalista, että manuaalisesti käynnistettävänä GitHub workflowna. Pidin manuaalista käynnistystä mielekkeempänä toteutuksena, kuin pushiin liitettyä ajoa.
+
+Testit on jaettu testattavien sivujen mukaan kahteen tiedostoon, jossa loogiset kokonaisuudet ovat oma testinsä. Lisäksi projekti sisältää `utils.ts` tiedston apufunktioille, joita molemmat testit voivat käyttää.
+
 ## Back-end projekti - Regions of Finland
 
 - Repositorio: https://github.com/jaolim/back_end_harjoitustyo
 - Julkaisu: https://dev-backend-harjoitustyo-backend-harjoitustyo.2.rahtiapp.fi/
 
-### Testattavat osoitteet ja elementit
+Regions of Finland sivu sisältää Suomen maakunnat, joissa on kaupunkeja, joissa on paikkoja, joissa on kommentteja.
 
-*Tarkempi testikattavuus määritelty itse testeissä. Tässä listattuna sivujen oleelliset testtavat elementit.*
+Maakuntien, kaupunkien ja paikkojen lisäys, editointi ja poisto vaativat admin oikeudet.
+
+Kommentteja voivat lisätä kaikki tunnistustautuneet käyttäjät, kommenttia voi editoida vain sen lisännyt käyttäjä ja sen voi poistaa admin tai sen lisännyt käyttäjät.
+
+Elementit näkyvät ainoastaan käyttäjille, joilla on niille käyttöoikeus ja virheellinen data submitissa tuottaa virheilmoituksia tiettyyn html elementtiin.
+
+### Testaus
+
+
+
+#### Testattavat osoitteet ja elementit
+
+*Tarkempi testikuvaus kommentoitu testeihin. Tässä ainoastaan listattuna sivujen oleelliset testattavat elementit.*
 
 	-/
 		- Login, Logout, Clear Database, Add New Region, Select, Edit, Delete
@@ -45,13 +65,59 @@ Testauksen aion tehdä ajoaikaista tietokantaa käyttävään versioon, mutta se
 						- Comment Headline, Comment Body, Save
 					- /location/{id}/comment/edit/{id}
 						- Comment Headline, Comment Body, Save
+						
+#### Testit
+
+	- **Regions responds**: Sivu latautuu
+	- **Admin login and navigation**: Admin käyttäjällä pääsee kirjautumaan, sivun navigointi toimii ja oikeat elementit löytyvät kaikist endpointeista
+	- **Login works user**: Admin käyttäjällä pääsee kirjautumaan, sivun navigointi toimii, oikeat elementit löytyvät kaikist endpointeista ja kiellettyjä elementtejä ei löydy
+	- **Regions CRUD**: Regions listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
+	- **Cities CRUD**: Cities listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
+	- **Locations CRUD**: Locations listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
+	- **Comments CRUD**: Comments listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
 					
 ## Ohjelmistoprojekti I - TicketGuru
 
-Tätä projektia varten toteutan perus tarkistukset endpointeille, jotta on helppo jatkokehittää tarkempia testejä, kun sivujen sisältö on lyöty lukkoon.
-
 - Repositorio: https://github.com/jaolim/TicketGuru
 - Julkaisu: https://ticketguru-ticketguru-postgres.2.rahtiapp.fi/
+
+TicketGuru on lipunmyyntipalvelu, jossa voi myydä tapahtumiin lippuja.
+
+### Testaus
+
+Tämä projekti on vielä kesken ja sivut tulevat muuttumaan huomattavasti, joten testit kattavat ainoastaan sisäänkirjautumisen ja eri endpointtien toimivuuden.
+
+Tältä pohjalta pysytyy jatkokehittämään kattavammat testit, kunhan sivujen sisältö on lyöty lukkoon.
+
+#### Testattavat osoitteet ja elementit
+
+*Tarkempi testikuvaus kommentoitu testeihin. Tässä ainoastaan listattuna sivujen oleelliset testattavat elementit.*
+
+	- /
+		- Login, Sell Tickets, Events, Venues, Users
+		- /login
+			- Login form
+		- /sell
+			- Sell Tickets, Create Sale, Home
+		- /eventpage
+			- Add New Event
+			- /event/add
+				- Event form
+		- /venuepage
+			- Add New Venue
+			- /venue/add
+				- Venue form
+		- /uesrpage
+			- Add New User
+			- /user/add
+				- User form
+				
+#### Testit
+
+	- **TicketGuru responds**: Sivu latautuu
+	- **Login works admin**: Admin käyttäjällä pääsee kirjautumaan
+	- **Login works user**: User käyttäjällä pääsee kirjautumaan
+	- **Endpoints**: Navigointi eri endpointteihin onnistuu
 
 ## Ympäristömuuttujat
 

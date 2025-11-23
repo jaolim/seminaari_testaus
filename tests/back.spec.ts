@@ -274,7 +274,7 @@ test('Regions CRUD', async ({ page }) => {
     //logging in
     await page.goto(`${url}/login`);
     await page.getByLabel("User Name :").fill(String(process.env.B_USERNAME1))
-    await page.getByLabel("Password:").fill(`${String(process.env.B_PASSWORD1)}`);
+    await page.getByLabel("Password:").fill(String(process.env.B_PASSWORD1));
     await page.getByRole('button', { name: 'Sign In' }).click()
 
     //Clearing old values if present

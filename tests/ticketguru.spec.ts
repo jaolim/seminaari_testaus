@@ -60,7 +60,7 @@ test('Endpoints', async ({ page }) => {
     await page.goto(`${url}/login`);
     await expect(page.getByText("Please sign in")).toBeVisible();
     await page.getByPlaceholder("Username").fill(String(process.env.T_USERNAME1));
-    await page.getByPlaceholder("Password").fill(`${String(process.env.T_PASSWORD1)}`);
+    await page.getByPlaceholder("Password").fill(String(process.env.T_PASSWORD1));
     await page.getByRole("button").click();
     await expect(page.getByText("pääsylippusi")).toBeVisible();
 

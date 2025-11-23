@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { trClickIfExists } from '../helpers/utils';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -266,6 +267,10 @@ test('Regions CRUD', async ({ page }) => {
     await page.getByLabel("Password:").fill(`${String(process.env.B_PASSWORD1)}`);
     await page.getByRole('button', { name: 'Sign In' }).click()
 
+    //Clearing old values if present
+    await trClickIfExists(page, 'Playwright', 'Delete');
+    await trClickIfExists(page, 'EditTest', 'Delete');
+
     //Add region page
     await page.goto(`${url}/region/add`)
     const addButton = page.getByRole('button', { name: "Save" });
@@ -330,6 +335,14 @@ test('Cities CRUD', async ({ page }) => {
     await page.getByLabel("User Name :").fill(String(process.env.B_USERNAME1))
     await page.getByLabel("Password:").fill(`${String(process.env.B_PASSWORD1)}`);
     await page.getByRole('button', { name: 'Sign In' }).click()
+
+    //Clearing old values if present
+    await page
+        .locator('tr', { has: page.getByText('Uusimaa') })
+        .getByRole('link', { name: 'Select' })
+        .click();
+    await trClickIfExists(page, 'Playwright', 'Delete');
+    await trClickIfExists(page, 'CityEdit', 'Delete');
 
     //Add city page
     await page.goto(`${url}/city/add`)
@@ -408,7 +421,7 @@ test('Locations CRUD', async ({ page }) => {
     await page.getByLabel("Password:").fill(`${String(process.env.B_PASSWORD1)}`);
     await page.getByRole('button', { name: 'Sign In' }).click()
 
-    //Add location page
+    //Helsinki page
     await page
         .locator('tr', { has: page.getByText('Uusimaa') })
         .getByRole('link', { name: 'Select' })
@@ -417,6 +430,12 @@ test('Locations CRUD', async ({ page }) => {
         .locator('tr', { has: page.getByText('Helsinki') })
         .getByRole('link', { name: 'Select' })
         .click();
+
+    //Clearing old values if present
+    await trClickIfExists(page, 'Playwright', 'Delete');
+    await trClickIfExists(page, 'EditedLocation', 'Delete');
+
+    //Add location page
     await page.getByRole('link', { name: 'Add New Location' }).click();
     await expect(page).toHaveURL(`${url}/location/add`);
 
@@ -497,6 +516,10 @@ test('Comments CRUD', async ({ page }) => {
     const railwayUrl = page.url();
     await page.getByRole('link', { name: 'Add New Comment' }).click();
     await expect(page).toHaveURL(`${railwayUrl}/comment/add`);
+
+    //Clearing old values if present
+    await trClickIfExists(page, 'Playwright', 'Delete');
+    await trClickIfExists(page, 'EditedHeadline', 'Delete');
 
     //Add comment elements
     const addButton = page.getByRole('button', { name: "Save" });

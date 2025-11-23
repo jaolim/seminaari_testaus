@@ -8,7 +8,7 @@ Seminaarin tavoitteena on toteuttaa front-endin testaus kahteen yllämainittuun 
 
 Ohjelmistoprojekti I sen sijaan on vielä kesken, joten testit on suunniteltava helposti päivitettäviksi front-endin muuttuessa, sekä tehtävä päätös siitä, mitä kaikkea niiden on mielekästä kattaa.
 
-Molemmista projekteista on kaksi julkaisua rahtiin, joista toinen käyttää ajoaikaista tietokantaa ja toinen pysyvää.
+Molemmista projekteista on kaksi julkaisua rahtiin, joista toinen käyttää ajoaikaista H2 tietokantaa ja toinen pysyvää.
 
 Testauksen aion tehdä ajoaikaista tietokantaa käyttävään versioon, mutta senkään sisällöstä ei testejä ajettaessa ole varmuutta, joka on otettava suunnittelussa huomioon, erityisesti update tai delete toiminnallisuuksia testatessa.
 
@@ -27,15 +27,15 @@ Regions of Finland sivu sisältää Suomen maakunnat, joissa on kaupunkeja, jois
 
 Maakuntien, kaupunkien ja paikkojen lisäys, editointi ja poisto vaativat admin oikeudet.
 
-Kommentteja voivat lisätä kaikki tunnistustautuneet käyttäjät, kommenttia voi editoida vain sen lisännyt käyttäjä ja sen voi poistaa admin tai sen lisännyt käyttäjät.
+Kommentteja voivat lisätä kaikki tunnistustautuneet käyttäjät, kommenttia voi editoida vain sen lisännyt käyttäjä ja sen voi poistaa admin tai sen lisännyt käyttäjä.
 
 Elementit näkyvät ainoastaan käyttäjille, joilla on niille käyttöoikeus ja virheellinen data submitissa tuottaa virheilmoituksia tiettyyn html elementtiin.
 
 ### Testaus
 
-Testit kattavat sivuston navigoinnin, sekä oikeiden elementtien näkymisen admin ja user käyttäjille ja CRUD toiminnallisuuksien testaamisen admin käyttäjälle.
+Testit kattavat sivuston navigoinnin, oikeiden elementtien näkymisen admin ja user käyttäjille ja CRUD toiminnallisuuksien testaamisen admin käyttäjälle.
 
-Testeissä luotan testattavan sovelluksen generoiman testidatan löytyvän oikeassa muodossa, mutta testien lisäämän ja poistaman datan lähtötilan validoin etsimällä ja tuhoamalla datan, jos se on olemassa testien lähtötilanteissa.
+Testeissä luotan testattavan sovelluksen generoiman testidatan löytyvän oikeassa muodossa, mutta testien itsensä lisäämän ja poistaman datan lähtötilan validoin etsimällä ja tuhoamalla datan, jos se on olemassa testien lähtötilanteissa.
 
 #### Testattavat osoitteet ja elementit
 
@@ -71,8 +71,8 @@ Testeissä luotan testattavan sovelluksen generoiman testidatan löytyvän oikea
 #### Testit
 
 - **Regions responds**: Sivu latautuu
-- **Admin login and navigation**: Admin käyttäjällä pääsee kirjautumaan, sivun navigointi toimii ja oikeat elementit löytyvät kaikist endpointeista
-- **Login works user**: User käyttäjällä pääsee kirjautumaan, sivun navigointi toimii, oikeat elementit löytyvät kaikist endpointeista ja kiellettyjä elementtejä ei löydy
+- **Admin login and navigation**: Admin käyttäjällä pääsee kirjautumaan, sivun navigointi toimii ja oikeat elementit löytyvät kaikista endpointeista
+- **Login works user**: User käyttäjällä pääsee kirjautumaan, sivun navigointi toimii, oikeat elementit löytyvät kaikista endpointeista ja kiellettyjä elementtejä ei löydy
 - **Regions CRUD**: Regions listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
 - **Cities CRUD**: Cities listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
 - **Locations CRUD**: Locations listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
@@ -131,10 +131,14 @@ Paikallisesti tämä on .env tiedostosto seuraavassa muodossa projektin päähak
 T_URL=
 T_USERNAME1=
 T_PASSWORD1=
+T_USERNAME2=
+T_PASSWORD2=
 
 B_URL=
 B_USERNAME1=
 B_PASSWORD1=
+B_USERNAME2=
+B_PASSWORD2=
 ````
 
 ## Github Actions Workflow
@@ -151,51 +155,20 @@ Halusin testit ajettaviksi Githubissa, mutta ainoastaan manuaalisesti, joten joi
 
 Lisäksi tarvitsin ympäristömuuttujat Githubiin, joten ne piti myös määritellä workflow tiedostoon.
 
-Päivitetty playwright.yml:
-
-```
-name: Playwright Tests
-on:
-  workflow_dispatch:
-jobs:
-  test:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    env:
-      T_URL: ${{ secrets.T_URL }}
-      T_USERNAME1: ${{ secrets.T_USERNAME1 }}
-      T_PASSWORD1: ${{ secrets.T_PASSWORD1 }}
-      B_URL: ${{ secrets.B_URL }}
-      B_USERNAME1: ${{ secrets.B_USERNAME1 }}
-      B_PASSWORD1: ${{ secrets.B_PASSWORD1 }}
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
-
-```
-
 ### Github ja ympäristömuuttujat
 
 En ollut aikasemmin tarvinnut ympäristömuuttujia Github repositorioon, joten salaisuuksien lisääminen repositorioon oli selvitettävä, jotta Github Actions voi ajaa testit onnistuneesti.
 
 ### Playwright taitojen kehitys
 
-En ollut ennen kurssia käyttänyt playwrightia, joten viikkotehtävää monimutkaisempien testien toteutus antoi lisää ymmärrystä ja käytännön kokemusta playwright testien kirjiottamisesta ja suunnittelemista.
+En ollut ennen kurssia käyttänyt playwrightia, joten viikkotehtävää monimutkaisempien testien toteutus antoi lisää ymmärrystä ja käytännön kokemusta playwright testien kirjoittamisesta ja suunnittelemista.
+
+Erityisesti dynaamisesti generoituvissa elementeissä, joista vain osa arvoista tiedetään joitui käyttämään viikkotehtävää monimuktaisempaa elementtien paikantamista.
+
+Koska testattavat sivut käyttävät tietokantaa, piti myös puuttuvien elementtien validointi miettiä, ettei yksi epäonnistunut testiajo riko myös tulevia testiajoa, jos se jättää tietokannan muuhun kuin oletettuun tilaan.
 
 ## Lähteet
 
 Playwright.dev. Playwright dokumentaatio. https://playwright.dev/docs
+
+Github.com. Events that trigger workflows. https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch

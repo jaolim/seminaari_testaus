@@ -68,13 +68,13 @@ Elementit näkyvät ainoastaan käyttäjille, joilla on niille käyttöoikeus ja
 						
 #### Testit
 
-	- **Regions responds**: Sivu latautuu
-	- **Admin login and navigation**: Admin käyttäjällä pääsee kirjautumaan, sivun navigointi toimii ja oikeat elementit löytyvät kaikist endpointeista
-	- **Login works user**: Admin käyttäjällä pääsee kirjautumaan, sivun navigointi toimii, oikeat elementit löytyvät kaikist endpointeista ja kiellettyjä elementtejä ei löydy
-	- **Regions CRUD**: Regions listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
-	- **Cities CRUD**: Cities listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
-	- **Locations CRUD**: Locations listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
-	- **Comments CRUD**: Comments listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
+- **Regions responds**: Sivu latautuu
+- **Admin login and navigation**: Admin käyttäjällä pääsee kirjautumaan, sivun navigointi toimii ja oikeat elementit löytyvät kaikist endpointeista
+- **Login works user**: Admin käyttäjällä pääsee kirjautumaan, sivun navigointi toimii, oikeat elementit löytyvät kaikist endpointeista ja kiellettyjä elementtejä ei löydy
+- **Regions CRUD**: Regions listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
+- **Cities CRUD**: Cities listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
+- **Locations CRUD**: Locations listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
+- **Comments CRUD**: Comments listaus, lisäys, editointi, poisto toimivat ja kielletty data antaa oiketa virheilmoituksia
 					
 ## Ohjelmistoprojekti I - TicketGuru
 
@@ -114,10 +114,10 @@ Tältä pohjalta pysytyy jatkokehittämään kattavammat testit, kunhan sivujen 
 				
 #### Testit
 
-	- **TicketGuru responds**: Sivu latautuu
-	- **Login works admin**: Admin käyttäjällä pääsee kirjautumaan
-	- **Login works user**: User käyttäjällä pääsee kirjautumaan
-	- **Endpoints**: Navigointi eri endpointteihin onnistuu
+- **TicketGuru responds**: Sivu latautuu
+- **Login works admin**: Admin käyttäjällä pääsee kirjautumaan
+- **Login works user**: User käyttäjällä pääsee kirjautumaan
+- **Endpoints**: Navigointi eri endpointteihin onnistuu
 
 ## Ympäristömuuttujat
 
